@@ -1,7 +1,7 @@
 # GymLog - Open sourced, fully local, fitness application
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/sergiumereacre/gymlog/fork)
 
 An open-source fitness tracking application built with React Native. Contributions are welcome to the project.
 
