@@ -3,13 +3,9 @@ import { Text, View } from "react-native";
 export default function Index() {
   return (
     <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className="flex items-center"
     >
-      <Text>Fresh new start babyyyyy OPen SOURRCESSSSSS</Text>
+      <Text className="text-2xl text-green-300">Fresh new startsss</Text>
     </View>
   );
 }
