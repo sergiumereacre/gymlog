@@ -1,5 +1,6 @@
 import "@/app/global.css";
-import { ThemeProvider, useTheme } from "@/utils/theme";
+import { useTheme } from "@/hooks/useTheme";
+import { ThemeProvider } from "@/utils/theme";
 import { useFonts } from "expo-font";
 import { useKeepAwake } from "expo-keep-awake";
 import * as Notifications from "expo-notifications";
