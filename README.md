@@ -70,7 +70,7 @@ gymlog/
 ├── components/      # Reusable components
 ├── constants/       # App constants
 ├── hooks/           # Custom hooks
-├── storage/         # Stores for local storage
+├── stores/          # Stores for local storage
 └── utils/           # Utility functions
 ```
 

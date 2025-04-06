@@ -1,11 +1,15 @@
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
+import useConfigurationStore from "@/stores/configurationStore";
 
 export default function Index() {
+  const { theme, toggleTheme } = useConfigurationStore()
+
   return (
-    <View
-      className="flex items-center"
-    >
-      <Text className="text-2xl text-green-300">Fresh new startsss</Text>
+    <View className="bg-background flex-1">
+      <Text className="text-text">
+        Current theme: {theme === 'light' ? 'dark' : 'light'}
+      </Text>
+      <Button title="Toggle Theme" onPress={toggleTheme} />
     </View>
   );
 }
