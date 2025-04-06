@@ -4,14 +4,11 @@ import { configurationStateStorage } from '@/stores/mmkv'
 import * as Notifications from 'expo-notifications'
 
 export interface ConfigurationState {
-    configured: boolean
     isLoading: boolean
     pushToken: Notifications.ExpoPushToken | undefined
     notifications: boolean
     metricSystem: boolean
     theme: 'light' | 'dark'
-    setConfigured: (configured: boolean) => void
-    toggleConfigured(): void
     setIsLoading(isLoading: boolean): void
     setPushToken(pushToken: Notifications.ExpoPushToken): void
     toggleNotifications(): void
@@ -26,16 +23,10 @@ const useConfigurationStore = create<ConfigurationState>()(
         (set) => ({
             // Default values.
             isLoading: false,
-            configured: false,
             pushToken: undefined,
             notifications: false,
             metricSystem: true,
             theme: 'dark',
-            // Set Configure to true when the user has completed the onboarding.
-            setConfigured: (configured: boolean) => set({ configured }),
-            // Toggle Configured to push user back to onboarding if needed.
-            toggleConfigured: () =>
-                set((state) => ({ configured: !state.configured })),
             // Set Loading to false when the app has finished loading.
             setIsLoading: (isLoading: boolean) => set({ isLoading }),
             // Set the notifications push token after user accepts permissions.
@@ -56,7 +47,6 @@ const useConfigurationStore = create<ConfigurationState>()(
             resetConfigStore: () =>
                 set({
                     isLoading: false,
-                    configured: false,
                     pushToken: undefined,
                     notifications: false,
                     metricSystem: true,

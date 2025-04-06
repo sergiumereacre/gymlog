@@ -14,3 +14,18 @@ export const themeVariables = {
 		"--color-text": "#FFFFFF",
 	}),
 };
+
+export const themeHex = {
+	light: {
+		primary: "#000000",
+		secondary : "#ffffff",
+		background: "#ffffff",
+		text: "#000000"
+	},
+	dark: {
+		primary: "#ffffff",
+		secondary : "#000000",
+		background: "#000000",
+		text: "#FFFFFF"
+	}
+} as const;
