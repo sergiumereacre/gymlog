@@ -1,63 +1,72 @@
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import { configurationStateStorage } from '@/stores/mmkv'
-import * as Notifications from 'expo-notifications'
+import { configurationStateStorage } from "@/stores/mmkv";
+import type { ExpoPushToken } from "expo-notifications";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
-export interface ConfigurationState {
-    isLoading: boolean
-    pushToken: Notifications.ExpoPushToken | undefined
-    notifications: boolean
-    metricSystem: boolean
-    theme: 'light' | 'dark'
-    setIsLoading(isLoading: boolean): void
-    setPushToken(pushToken: Notifications.ExpoPushToken): void
-    toggleNotifications(): void
-    toggleMetricSystem(): void
-    setTheme: (theme: 'light' | 'dark') => void
-    toggleTheme: () => void
-    resetConfigStore(): void
+// Splitting the state and actions into separate interfaces for better organization
+// and readability.
+interface ConfigurationState {
+	pushToken: ExpoPushToken | undefined;
+	notifications: boolean;
+	metricSystem: boolean;
+	theme: "light" | "dark";
 }
 
-const useConfigurationStore = create<ConfigurationState>()(
-    persist(
-        (set) => ({
-            // Default values.
-            isLoading: false,
-            pushToken: undefined,
-            notifications: false,
-            metricSystem: true,
-            theme: 'dark',
-            // Set Loading to false when the app has finished loading.
-            setIsLoading: (isLoading: boolean) => set({ isLoading }),
-            // Set the notifications push token after user accepts permissions.
-            setPushToken: (pushToken: Notifications.ExpoPushToken) =>
-                set({ pushToken }),
-            // Toggle Notifications.
-            toggleNotifications: () =>
-                set((state) => ({ notifications: !state.notifications })),
-            // Toggle metrics system.
-            toggleMetricSystem: () =>
-                set((state) => ({ metricSystem: !state.metricSystem })),
-            // Dark mode toggling and setting
-            setTheme: (theme) => set({ theme }),
-            toggleTheme: () => set((state) => ({
-                theme: state.theme === 'light' ? 'dark' : 'light'
-            })),
-            // Reset configuration store.
-            resetConfigStore: () =>
-                set({
-                    isLoading: false,
-                    pushToken: undefined,
-                    notifications: false,
-                    metricSystem: true,
-                    theme: 'dark'
-                }),
-        }),
-        {
-            name: 'configuration-storage',
-            storage: createJSONStorage(() => configurationStateStorage),
-        }
-    )
-)
+interface ConfigurationActions {
+	setPushToken: (pushToken: ExpoPushToken) => void;
+	toggleNotifications: () => void;
+	toggleMetricSystem: () => void;
+	setTheme: (theme: "light" | "dark") => void;
+	toggleTheme: () => void;
+	resetConfigStore: () => void;
+}
 
-export default useConfigurationStore
+// Zustand store for managing configuration state
+const useConfigurationStore = create<
+	ConfigurationState & ConfigurationActions
+>()(
+	persist(
+		immer((set) => ({
+			// Explicit initial state
+			pushToken: undefined,
+			notifications: false,
+			metricSystem: true,
+			theme: "dark",
+
+			// Actions using Immer's mutable draft pattern
+			setPushToken: (pushToken) => set({ pushToken }),
+
+			toggleNotifications: () =>
+				set((state) => {
+					state.notifications = !state.notifications;
+				}),
+
+			toggleMetricSystem: () =>
+				set((state) => {
+					state.metricSystem = !state.metricSystem;
+				}),
+
+			setTheme: (theme) => set({ theme }),
+
+			toggleTheme: () =>
+				set((state) => {
+					state.theme = state.theme === "light" ? "dark" : "light";
+				}),
+
+			resetConfigStore: () =>
+				set((state) => {
+					state.pushToken = undefined;
+					state.notifications = false;
+					state.metricSystem = true;
+					state.theme = "dark";
+				}),
+		})),
+		{
+			name: "config-store-v1",
+			storage: createJSONStorage(() => configurationStateStorage),
+		}
+	)
+);
+
+export default useConfigurationStore;

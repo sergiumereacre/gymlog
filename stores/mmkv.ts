@@ -12,7 +12,7 @@ export const workoutStorage = new MMKV({
     id: 'workout-storage',
 })
 
-// State Storage for Configuration and Workout Data.
+// State Storage for Configuration Settings.
 export const configurationStateStorage: StateStorage = {
     setItem: (name: string, value: string) => {
         configurationStorage.set(name, value)
@@ -26,6 +26,7 @@ export const configurationStateStorage: StateStorage = {
     },
 }
 
+// State Storage for Workout Data.
 export const workoutStateStorage: StateStorage = {
     setItem: (name: string, value: string) => {
         workoutStorage.set(name, value)
